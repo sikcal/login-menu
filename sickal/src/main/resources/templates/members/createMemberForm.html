@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="container">
+    <form action="/members/new" method="post">
+        <div class="form-group">
+            <label for="id">Id</label>
+            <input type="text" id="id" name="id" placeholder="input">
+            <label for="pw">비번</label>
+            <input type="text" id="pw" name="pw" placeholder="비번">
+            <label for="height">키</label>
+            <input type="text" id="height" name="height" placeholder="키">
+            <label for="weight">몸무게</label>
+            <input type="text" id="weight" name="weight" placeholder="몸무게">
+            <label for="goal">목표</label>
+            <input type="text" id="goal" name="goal" placeholder="목표">
+            <label for="target_weight">목표체중</label>
+            <input type="text" id="target_weight" name="target_weight" placeholder="목표체중">
+            <label for="birth">생년월일</label>
+            <input type="text" id="birth" name="birth" placeholder="생년월일">
+            <label for="sex">성별</label>
+            <input type="text" id="sex" name="sex" placeholder="성별">
+            <label for="activity">활동량</label>
+            <input type="text" id="activity" name="activity" placeholder="활동량">
+        </div>
+        <button type="submit">등록</button>
+    </form>
+</div> <!-- /container -->
+</body>
+</html>
