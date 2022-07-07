@@ -1,6 +1,8 @@
 package com.AppGaeBom.sickal.domain;
 
+import com.AppGaeBom.sickal.dto.MemberDto;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -26,6 +28,8 @@ public class Member {
     private String name;
 
     private int height;
+
+    @DateTimeFormat(pattern= "yyyy-MM-dd")
     private LocalDate birth;
 
     @Enumerated(EnumType.STRING)
@@ -38,6 +42,21 @@ public class Member {
     private MemberGoal goal;
 
     private int weight;
+
+    //member에서 dto로
+    public MemberDto toDto(){
+        return MemberDto.builder().id(id)
+                .activity(activity)
+                .birth(birth)
+                .goal(goal)
+                .height(height)
+                .name(name)
+                .password(password)
+                .sex(sex)
+                .weight(weight)
+                .build();
+    }
+
 
 
 }

@@ -7,6 +7,7 @@ import com.AppGaeBom.sickal.domain.MemberSex;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Column;
 import javax.persistence.EnumType;
@@ -34,7 +35,6 @@ public class MemberDto {
     @NotBlank(message = "아이디는 필수 입력 값입니다.")
     private String id;
 
-    @NotNull
     @NotBlank(message = "비밀번호는 필수 입력 값입니다.")
     @Pattern(regexp = "(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,16}",
             message = "비밀번호는 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.")
@@ -42,19 +42,16 @@ public class MemberDto {
 
 
     @NotNull
-    @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-z0-9-_]{2,10}$", message = "닉네임은 특수문자를 제외한 2~10자리여야 합니다.")
+    @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-z0-9-_]{2,10}$", message = "이름은 특수문자를 제외한 2~10자리여야 합니다.")
     private String name;
-    @NotNull
     private int height;
-    @NotNull
+
+    @DateTimeFormat(pattern= "yyyy-MM-dd")
     private LocalDate birth;
-    @NotNull
+
     private MemberSex sex;
-    @NotNull
     private MemberActivity activity;
-    @NotNull
     private MemberGoal goal;
-    @NotNull
     private int weight;
 
 

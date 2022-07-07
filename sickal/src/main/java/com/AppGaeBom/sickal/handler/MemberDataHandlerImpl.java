@@ -35,6 +35,12 @@ public class MemberDataHandlerImpl implements MemberDataHandler{
     public Optional<Member> findById(String id) {
         return memberDao.findById(id);
     }
+
+    @Override
+    public Member login(String id, String pw) {
+
+        return memberDao.login(id,pw);
+    }
     //결국 DB에서 crud작업하는 건 Dao
     //하지만 Db를 건들 필요 없다? 서비스단에서 해결하자 !!!
     //복잡한 데이터 핸들링할 필요도 없다

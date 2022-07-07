@@ -9,4 +9,6 @@ public interface MemberDataHandler {
     Member join(MemberDto memberDto);
     void checkUserIdDuplication(MemberDto memberDto);
     Optional<Member> findById(String id);
+    Member login(String id, String pw);
+
 }

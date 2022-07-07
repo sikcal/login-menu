@@ -11,4 +11,5 @@ public interface MemberDao {
     Member join(Member member);
     void checkUserIdDuplication(Member member);
     Optional<Member> findById(String Id);
+    Member login(String id, String pw);
 }

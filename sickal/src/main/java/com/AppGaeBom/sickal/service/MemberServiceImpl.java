@@ -5,10 +5,12 @@ import com.AppGaeBom.sickal.domain.Member;
 import com.AppGaeBom.sickal.domain.MemberActivity;
 import com.AppGaeBom.sickal.domain.MemberSex;
 import com.AppGaeBom.sickal.dto.InfoDto;
+import com.AppGaeBom.sickal.dto.LoginDto;
 import com.AppGaeBom.sickal.dto.MemberDto;
 import com.AppGaeBom.sickal.handler.MemberDataHandler;
 import com.AppGaeBom.sickal.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
@@ -27,14 +29,13 @@ public class MemberServiceImpl implements MemberService {
     MemberDataHandler memberDataHandler;
     //굳이 엔티티로 바꿔서 연산할 필요없는것들은
     // data 핸들러 건너뛰고 바로 dao 로 dto 형식으로 리턴받기
-
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Autowired
     public MemberServiceImpl(MemberDataHandler memberDataHandler) {
         this.memberDataHandler = memberDataHandler;
     }
-
-
 
     /**
      * 회원가입
@@ -42,7 +43,9 @@ public class MemberServiceImpl implements MemberService {
     public MemberDto join(MemberDto memberDto){
         //중복 아이디ㅣ x
         //validateDuplicateMember(member); // 중복회원 검증 메서드
-        checkUsernameDuplication(memberDto);
+        //checkUsernameDuplication(memberDto);
+        String encodedPassword = passwordEncoder.encode(memberDto.getPassword());
+        memberDto.setPassword(encodedPassword);
         Member member = memberDataHandler.join(memberDto);
         return memberDto;
     }
@@ -91,6 +94,17 @@ public class MemberServiceImpl implements MemberService {
 
        return infoDto;
     }
+
+    @Override
+    public MemberDto login(String id, String rawPw) {
+        //인코딩해서 값 비교
+        String encodedPassword = passwordEncoder.encode(rawPw);
+        Member member=memberDataHandler.login(id,encodedPassword);
+        //찾은 값 다시 dto형식으로 바꿔주깅
+        MemberDto memberDto = member.toDto();
+        return memberDto;
+    }
+
     public double CalculateBMR(int weight, int height, int age,MemberSex sex){
         double BMR=((10*weight)+(6.25*height)-(5*age));
         switch (sex){
@@ -127,7 +141,7 @@ public class MemberServiceImpl implements MemberService {
     public int calculateAge(LocalDate birth ){
         String birth1 = birth.toString();
         LocalDate now = LocalDate.now();
-        LocalDate parsedBirthDate = LocalDate.parse(birth1, DateTimeFormatter.ofPattern("yyyyMMdd"));
+        LocalDate parsedBirthDate = LocalDate.parse(birth1, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
         int age = now.minusYears(parsedBirthDate.getYear()).getYear(); // (1)
 

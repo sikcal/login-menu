@@ -2,6 +2,7 @@ package com.AppGaeBom.sickal.service;
 
 import com.AppGaeBom.sickal.domain.Member;
 import com.AppGaeBom.sickal.dto.InfoDto;
+import com.AppGaeBom.sickal.dto.LoginDto;
 import com.AppGaeBom.sickal.dto.MemberDto;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
@@ -14,4 +15,5 @@ public interface MemberService {
     Map<String, String> validateHandling(Errors errors);
     void checkUsernameDuplication(MemberDto memberDto);
     InfoDto searchInfoById(String id);
+    MemberDto login(String id, String pw);
 }

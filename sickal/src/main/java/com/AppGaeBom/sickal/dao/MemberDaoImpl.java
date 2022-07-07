@@ -5,23 +5,30 @@ import com.AppGaeBom.sickal.dto.InfoDto;
 import com.AppGaeBom.sickal.dto.MemberDto;
 import com.AppGaeBom.sickal.repository.SpringDataJpaMemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 @Service
+@Transactional
 public class MemberDaoImpl implements MemberDao{
+    //private final PasswordEncoder passwordEncoder;
     SpringDataJpaMemberRepository repository;
     @Autowired
     public MemberDaoImpl(SpringDataJpaMemberRepository repository) {
         this.repository = repository;
     }
-
+    @Autowired
+    PasswordEncoder passwordEncoder;
     @Override
     public Member join(Member member) {
         System.out.println(" dao 까진 왔음>? ㄴㄴ 못왔음 ");
         System.out.println("멤버"+member);
+        //member.setPassword();
+        String encodedPassword =passwordEncoder.encode(member.getPassword());
+        member.setPassword(encodedPassword);
         Member member1 =  repository.save(member);
         System.out.println("멤버1"+member1);
         return member1;
@@ -39,6 +46,13 @@ public class MemberDaoImpl implements MemberDao{
         Optional<Member> member = repository.findById(Id);
         return member;
     }
+
+    @Override
+    public Member login(String id, String pw) {
+        return repository.findById(id)
+                .filter(m -> m.getPassword().equals(pw))
+                .orElse(null);
+    }//
     /*
     생각해보니 pk는 id뿐 나머지는 중복되어도 상관없다?
     @Transactional(readOnly = true)
